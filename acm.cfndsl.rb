@@ -9,6 +9,8 @@ CloudFormation do
     cert_tags << { Key: key, Value: value }
   end if defined? tags
 
+  Condition('IsProd', FnEquals(Ref('EnvironmentName'), 'prod'))
+
   Resource("ACMCertificate") do
     Type 'Custom::CertificateValidator'
     Property 'ServiceToken',FnGetAtt('CertificateValidatorCR','Arn')
